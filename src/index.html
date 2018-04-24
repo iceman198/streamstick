@@ -2,8 +2,80 @@
 <head>
 </head>
 <script>
-var streamUrl = "http://192.168.0.100:123"
+    var timeCount = 0;
+    var retryTime = 30;
+    function init() {
+        timeCount = 0;
+        
+        try {
+            var streamUrl = "http://192.168.0.100:123";
+            //var streamer = document.getElementById("streamer");
+            //streamer.src = streamUrl;
+            
+            var video = document.getElementById('streamer');
+            var source = document.createElement('source');
+
+            //source.setAttribute('src', 'http://www.tools4movies.com/trailers/1012/Kill%20Bill%20Vol.3.mp4');
+            source.setAttribute('src', streamUrl);
+
+            video.appendChild(source);
+            video.play();
+        } catch(err) {
+            letsretry();
+        }
+    
+    }
+    
+    var Timer;
+    var TotalSeconds;
+
+    function CreateTimer(TimerID, Time) {
+        Timer = document.getElementById('timer');
+        TotalSeconds = Time;
+
+        UpdateTimer()
+        window.setTimeout("Tick()", 1000);
+    }
+
+    function Tick() {
+        if (TotalSeconds <= 0) {
+            //alert("Time's up!")
+            window.location.reload();
+            return;
+        }
+
+        TotalSeconds -= 1;
+        UpdateTimer()
+        window.setTimeout("Tick()", 1000);
+    }
+    
+    function UpdateTimer() {
+        var Seconds = TotalSeconds;
+        var Days = Math.floor(Seconds / 86400);
+        Seconds -= Days * 86400;
+        var Hours = Math.floor(Seconds / 3600);
+        Seconds -= Hours * (3600);
+        var Minutes = Math.floor(Seconds / 60);
+        Seconds -= Minutes * (60);
+        var TimeStr = ((Days > 0) ? Days + " days " : "") + LeadingZero(Hours) + ":" + LeadingZero(Minutes) + ":" + LeadingZero(Seconds)
+        Timer.innerHTML = "Reload in: " + TimeStr;
+    }
+
+    function LeadingZero(Time) {
+        return (Time < 10) ? "0" + Time : + Time;
+    }    
+    
+    function letsretry() {
+        CreateTimer("timer", 10);
+		//document.getElementById("lblTime").innerHTML = 5 - timeCount;
+		//timeCount++;
+		//if (timeCount == retryTime) { setTimeout(init, 0); }
+		//window.setTimeout(letsretry(), 1000); // Here 1000(milliseconds) means 1 sec
+	}
 </script>
-<body>
+<body onload="letsretry()">
+<p><label id="lblTime" style="font-size:large"></label></p>
+<div id="timer" />
+<video id="streamer" name="streamer" />
 </body>
 </html>

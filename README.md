@@ -4,7 +4,7 @@ Turn your raspberry pi zero (or any pi) into a stream receiver.  [VLC](https://w
 ## Setup
 Download the latest raspberry pi image for your application.  I will not do the step-by-step here.  You will want to insure SSH is enabled and you are able to connect to a wifi access point as well. Also, make sure to do a fresh update as well.
 
-1. Lets install chromium: `sudo apt-get install chromium`
+1. Lets install chromium: `sudo apt-get install chromium-browser`
 
 2. Create a new directory for our code: `mkdir ~/streamstick`
 
